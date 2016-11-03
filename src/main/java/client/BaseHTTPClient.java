@@ -18,7 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
 
-public class BaseHTTPClient {
+public class BaseHTTPClient extends BaseClient{
 
     private Map<String, String> cookies = new HashMap<>();
 
@@ -36,7 +36,7 @@ public class BaseHTTPClient {
     }
 
     ResponseModel call(RequestModel request) throws IOException {
-
+//startLog();
         //PATH
         URL url = new URL(request.getURL());
         HttpURLConnection con = (HttpURLConnection) url.openConnection();

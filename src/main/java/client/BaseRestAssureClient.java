@@ -15,7 +15,7 @@ import java.util.Map;
 
 import static com.jayway.restassured.RestAssured.given;
 
-public class BaseRestAssureClient {
+public class BaseRestAssureClient extends BaseClient{
 
     private Map<String, String> cookies = new HashMap<>();
 
