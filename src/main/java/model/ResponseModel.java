@@ -72,10 +72,16 @@ public class ResponseModel {
         //statusCode
         res.setStatusCode(con.getResponseCode());
 
-        //body
-        java.util.Scanner s = new java.util.Scanner(con.getInputStream()).useDelimiter("\\A");
-        res.setBody(s.hasNext() ? s.next() : "");
-        s.close();
+        if (res.getStatusCode() != 200) {
+            java.util.Scanner s = new java.util.Scanner(con.getErrorStream()).useDelimiter("\\A");
+            res.setBody(s.hasNext() ? s.next() : "");
+            s.close();
+        } else {
+            //body
+            java.util.Scanner s = new java.util.Scanner(con.getInputStream()).useDelimiter("\\A");
+            res.setBody(s.hasNext() ? s.next() : "");
+            s.close();
+        }
         //header
         res.setHeader(transformHeader(con.getHeaderFields()));
         //cookies

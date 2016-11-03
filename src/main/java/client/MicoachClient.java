@@ -10,8 +10,8 @@ import static com.jayway.restassured.internal.http.Method.DELETE;
 import static com.jayway.restassured.internal.http.Method.GET;
 import static com.jayway.restassured.internal.http.Method.POST;
 
-public class MicoachClient extends BaseHTTPClient/*BaseRestAssureClient*/ {
-
+//public class MicoachClient extends BaseHTTPClient {
+public class MicoachClient extends BaseRestAssureClient {
     private static final String PROTOCOL = "https://";
     private static final String HOST = "staging.micoach.adidas.com";
 

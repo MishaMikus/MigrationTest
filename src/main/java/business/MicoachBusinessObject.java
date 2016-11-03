@@ -161,7 +161,7 @@ public class MicoachBusinessObject {
                 "[total size  : " + StringFormatter.toGbMbKbString(response.getBody().getBytes().length) + "]\t" +
                 "[page : " + page + "]\t"
         );
-        storeWorkouts(response.getBody(), page);
+       // storeWorkouts(response.getBody(), page);
         if (responseParser.isNextPagePresent(response) != null && responseParser.isNextPagePresent(response)) {
             LOGGER.info(StringFormatter.makeProgressLogString("getWorkouts", start, page * itemsPerPage, totalResults));
             readWorkouts(start, page + 1, itemsPerPage);
