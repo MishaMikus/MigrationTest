@@ -1,0 +1,644 @@
+{
+  "components": [
+    {
+      "name": "Pillar Preparation",
+      "description": "Prime your hips, torso, and shoulders for exercise.",
+      "recommendedTime": 300,
+      "trainingComponentColor": "0x8fd652",
+      "trainingComponentColorAlias": "Green",
+      "order": 1,
+      "circuits": [
+        {
+          "order": 1,
+          "sets": [
+            {
+              "order": 1,
+              "exercises": [
+                {
+                  "order": 1,
+                  "movement": {
+                    "id": 130000000279
+                  },
+                  "numberOfRepetitions": 10,
+                  "readonly": false
+                },
+                {
+                  "order": 2,
+                  "movement": {
+                    "id": 130000000008
+                  },
+                  "numberOfRepetitions": 10,
+                  "readonly": false
+                },
+                {
+                  "order": 3,
+                  "movement": {
+                    "id": 130000000120
+                  },
+                  "numberOfRepetitions": 10,
+                  "readonly": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Movement Preparation",
+      "description": "Prepare your mind and body with a dynamic warm-up.",
+      "recommendedTime": 300,
+      "trainingComponentColor": "0x8fd652",
+      "trainingComponentColorAlias": "Green",
+      "order": 2,
+      "circuits": [
+        {
+          "order": 1,
+          "sets": [
+            {
+              "order": 1,
+              "exercises": [
+                {
+                  "order": 1,
+                  "movement": {
+                    "id": 130000000148
+                  },
+                  "numberOfRepetitions": 6,
+                  "readonly": false
+                },
+                {
+                  "order": 2,
+                  "movement": {
+                    "id": 130000000029
+                  },
+                  "numberOfRepetitions": 6,
+                  "readonly": false
+                },
+                {
+                  "order": 3,
+                  "movement": {
+                    "id": 130000000163
+                  },
+                  "numberOfRepetitions": 6,
+                  "readonly": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Strength & Power",
+      "description": "Use resistance training to build total-body strength.",
+      "recommendedTime": 900,
+      "trainingComponentColor": "0xff301c",
+      "trainingComponentColorAlias": "Red",
+      "order": 3,
+      "circuits": [
+        {
+          "order": 1,
+          "sets": [
+            {
+              "order": 1,
+              "exercises": [
+                {
+                  "order": 1,
+                  "movement": {
+                    "id": 130000000063
+                  },
+                  "numberOfRepetitions": 12,
+                  "readonly": false
+                },
+                {
+                  "order": 2,
+                  "movement": {
+                    "id": 130000000224
+                  },
+                  "numberOfRepetitions": 12,
+                  "readonly": false
+                },
+                {
+                  "order": 3,
+                  "movement": {
+                    "id": 130000000239
+                  },
+                  "numberOfRepetitions": 12,
+                  "readonly": false
+                },
+                {
+                  "order": 4,
+                  "movement": {
+                    "id": 130000000207
+                  },
+                  "numberOfRepetitions": 12,
+                  "readonly": false
+                }
+              ]
+            },
+            {
+              "order": 2,
+              "exercises": [
+                {
+                  "order": 1,
+                  "movement": {
+                    "id": 130000000063
+                  },
+                  "numberOfRepetitions": 12,
+                  "readonly": false
+                },
+                {
+                  "order": 2,
+                  "movement": {
+                    "id": 130000000224
+                  },
+                  "numberOfRepetitions": 12,
+                  "readonly": false
+                },
+                {
+                  "order": 3,
+                  "movement": {
+                    "id": 130000000239
+                  },
+                  "numberOfRepetitions": 12,
+                  "readonly": false
+                },
+                {
+                  "order": 4,
+                  "movement": {
+                    "id": 130000000207
+                  },
+                  "numberOfRepetitions": 12,
+                  "readonly": false
+                }
+              ]
+            },
+            {
+              "order": 3,
+              "exercises": [
+                {
+                  "order": 1,
+                  "movement": {
+                    "id": 130000000063
+                  },
+                  "numberOfRepetitions": 12,
+                  "readonly": false
+                },
+                {
+                  "order": 2,
+                  "movement": {
+                    "id": 130000000224
+                  },
+                  "numberOfRepetitions": 12,
+                  "readonly": false
+                },
+                {
+                  "order": 3,
+                  "movement": {
+                    "id": 130000000239
+                  },
+                  "numberOfRepetitions": 12,
+                  "readonly": false
+                },
+                {
+                  "order": 4,
+                  "movement": {
+                    "id": 130000000207
+                  },
+                  "numberOfRepetitions": 12,
+                  "readonly": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "sets": [
+            {
+              "order": 1,
+              "exercises": [
+                {
+                  "order": 1,
+                  "movement": {
+                    "id": 130000000133
+                  },
+                  "numberOfRepetitions": 8,
+                  "readonly": false
+                },
+                {
+                  "order": 2,
+                  "movement": {
+                    "id": 130000000014
+                  },
+                  "numberOfRepetitions": 10,
+                  "readonly": false
+                }
+              ]
+            },
+            {
+              "order": 2,
+              "exercises": [
+                {
+                  "order": 1,
+                  "movement": {
+                    "id": 130000000133
+                  },
+                  "numberOfRepetitions": 8,
+                  "readonly": false
+                },
+                {
+                  "order": 2,
+                  "movement": {
+                    "id": 130000000014
+                  },
+                  "numberOfRepetitions": 10,
+                  "readonly": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "workoutName": "Strength & Conditioning (Sample)",
+  "startDateTime": "2016-10-24T18:53:00",
+  "startDateTimeUTC": "2016-10-24T15:53:00.000Z",
+  "stopDateTime": "2016-10-24T19:18:00",
+  "workoutId": 30008278718,
+  "userComment": "",
+  "workoutRating": null,
+  "sensors": [
+    {
+      "name": "HR Sensor",
+      "calibrationFactor": 1,
+      "lastUpdated": "2016-08-27T13:26:46Z",
+      "serial": "100",
+      "type": "hrm"
+    }
+  ],
+  "stats": {
+    "userMaxHeartRate": 185,
+    "maxSpeed": 0,
+    "minSpeed": 0,
+    "avgSpeed": 0,
+    "calories": 1,
+    "minHeartRate": 72,
+    "maxHeartRate": 72,
+    "avgHeartRate": 72,
+    "totalWeightLifted": 414000
+  },
+  "dataPoints": [
+    {
+      "timeFromStart": 1.16,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 0,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 2.64,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 0,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 3.87,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 0,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 6.33,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 0,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 7.56,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 0,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 8.64,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 0,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 9.8,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 0,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 11.01,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 0,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 12.3,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 1,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 13.48,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 1,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 14.59,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 1,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 15.69,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 1,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 17.17,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 1,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 18.4,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 1,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 19.63,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 1,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 21.35,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 1,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 22.59,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 1,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 23.82,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 1,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 25.05,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 1,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 26.28,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 1,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 27.76,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 1,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 28.99,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 1,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 30.47,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 1,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 32.93,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 1,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    },
+    {
+      "timeFromStart": 33,
+      "intervalOrderNumber": 0,
+      "pace": 0,
+      "heartRate": 72,
+      "calories": 1,
+      "strideRate": 0,
+      "steps": 0,
+      "gpsUncertainty": 0,
+      "longitude": 0,
+      "latitude": 0,
+      "altitude": 0,
+      "distance": 0
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "workoutName": "Strength & Conditioning (Sample)",
+  "activityType": "strengthAndFlexibility",
+  "scheduledDate": "2016-10-24T00:00:00",
+  "workoutType": "custom",
+  "training": {
+    "id": 50074389139,
+    "targetType": "strengthAndFlex"
+  }
+}
