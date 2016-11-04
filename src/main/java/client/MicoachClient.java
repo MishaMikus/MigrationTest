@@ -139,4 +139,18 @@ public class MicoachClient extends BaseRestAssureClient {
         requestModel.setUseCookie(true);
         return call(requestModel);
     }
+
+    public ResponseModel getCustomTrainings(String accessToken, Integer itemsPerPage, Integer page) {
+        RequestModel requestModel = new RequestModel();
+        requestModel.setProtocol(PROTOCOL);
+        requestModel.setHost(HOST);
+        requestModel.setPath("/api/v3/users/me/CustomTrainings");
+        requestModel.setContentType("application/json");
+        requestModel.putHeader("Authorization", "Bearer " + accessToken);
+        requestModel.putParam("itemsPerPage", itemsPerPage);
+        requestModel.putParam("page", page);
+        requestModel.setHTTPMethod(GET);
+        requestModel.setUseCookie(true);
+        return call(requestModel);
+    }
 }

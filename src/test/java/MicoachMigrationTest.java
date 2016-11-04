@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import provider.UserProvider;
 
 import java.io.IOException;
+import java.util.Date;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -17,15 +18,11 @@ import static org.testng.Assert.assertTrue;
 public class MicoachMigrationTest extends BaseTest {
 
     private static final int USER_COUNT = 1000;
-    private static final int USER_THREAD_COUNT = 40;
-
-//    private static final int USER_COUNT = 1;
-//    private static final int USER_THREAD_COUNT = 1;
+    private static final int USER_THREAD_COUNT = 100;
 
     private String BASE_USER_NAME;
     private String BASE_USER_PASSWORD;
     private String USER_LIST_FILE_PATH;
-
 
     @BeforeClass
     public void setUp() throws IOException {
@@ -38,6 +35,7 @@ public class MicoachMigrationTest extends BaseTest {
 
     @Test(groups = "migration", invocationCount = USER_COUNT, threadPoolSize = USER_THREAD_COUNT)
     public void micoachMigrationTest() throws IOException, ParseException, InterruptedException {
+        Date startDate=new Date();
         //PREPARE
         MicoachBusinessObject micoachBusinessObject = new MicoachBusinessObject();
         micoachBusinessObject.setCurrentUser(UserProvider.migrationUser(BASE_USER_NAME, BASE_USER_PASSWORD, USER_LIST_FILE_PATH));
@@ -49,5 +47,12 @@ public class MicoachMigrationTest extends BaseTest {
         //READ WORKOUTS
         Integer itemsPerPage = 250;
         assertTrue(micoachBusinessObject.readWorkouts(itemsPerPage), "MIGRATION ERROR for user : " + micoachBusinessObject.getCurrentUser());
+
+        //READ CustomTrainings
+        itemsPerPage = 250;
+        assertTrue(micoachBusinessObject.readCustomTrainings(itemsPerPage), "MIGRATION ERROR for user : " + micoachBusinessObject.getCurrentUser());
+
+        //STORE RESULT
+        micoachBusinessObject.saveMigrationReport(startDate);
     }
 }

@@ -161,7 +161,6 @@ public class MicoachBusinessObject {
                 "[total size  : " + StringFormatter.toGbMbKbString(response.getBody().getBytes().length) + "]\t" +
                 "[page : " + page + "]\t"
         );
-       // storeWorkouts(response.getBody(), page);
         if (responseParser.isNextPagePresent(response) != null && responseParser.isNextPagePresent(response)) {
             LOGGER.info(StringFormatter.makeProgressLogString("getWorkouts", start, page * itemsPerPage, totalResults));
             readWorkouts(start, page + 1, itemsPerPage);
@@ -170,26 +169,37 @@ public class MicoachBusinessObject {
     }
 
     public boolean readWorkouts(Integer itemsPerPage) throws IOException {
-        Date start = new Date();
-        readWorkouts(start, 1, itemsPerPage);
-        FileWriter fw = new FileWriter("users/migrateUserList.txt", true);
-        BufferedWriter bw = new BufferedWriter(fw);
-        PrintWriter out = new PrintWriter(bw);
-        out.println(currentUser.getEmail() + "\tmigrate\t[elapsed : " + StringFormatter.elapsed(start) + "]\t" + new Date());
-        out.close();
-        bw.close();
-        fw.close();
+        readWorkouts(new Date(), 1, itemsPerPage);
         return true;
     }
 
-    public void storeWorkouts(String workouts, Integer page) throws IOException {
-        FileOutputStream fos = new FileOutputStream("users/workout/" + currentUser.getEmail() + "_p" + page + ".json");
-        OutputStreamWriter w = new OutputStreamWriter(fos, "UTF-8");
-        BufferedWriter bw = new BufferedWriter(w);
-        bw.write(workouts);
-        bw.flush();
+    public boolean readCustomTrainings(Integer itemsPerPage) {
+        readCustomTrainings(new Date(), 1, itemsPerPage);
+        return true;
+    }
+
+    private void readCustomTrainings(Date start, Integer page, Integer itemsPerPage) {
+        response = micoachClient.getCustomTrainings(currentUser.getAccessToken(), itemsPerPage, page);
+        Integer totalResults = responseParser.parseTotalResults(response);
+        LOGGER.info("[user : " + currentUser.getEmail() + "]\t" +
+                "[total workout count : " + totalResults + "]\t" +
+                "[total size  : " + StringFormatter.toGbMbKbString(response.getBody().getBytes().length) + "]\t" +
+                "[page : " + page + "]\t"
+        );
+        if (responseParser.isNextPagePresent(response) != null && responseParser.isNextPagePresent(response)) {
+            LOGGER.info(StringFormatter.makeProgressLogString("getWorkouts", start, page * itemsPerPage, totalResults));
+            readCustomTrainings(start, page + 1, itemsPerPage);
+        }
+        assertEquals(response.getStatusCode(), new Integer(200), "GET CUSTOM TRAININGS ERROR : " + response.getBody());
+    }
+
+    public void saveMigrationReport(Date startDate) throws IOException {
+        FileWriter fw = new FileWriter("users/migrateUserList.txt", true);
+        BufferedWriter bw = new BufferedWriter(fw);
+        PrintWriter out = new PrintWriter(bw);
+        out.println(currentUser.getEmail() + "\tmigrate\t" + (new Date().getTime() - startDate.getTime()) + "\t" + new Date());
+        out.close();
         bw.close();
-        w.close();
-        fos.close();
+        fw.close();
     }
 }
