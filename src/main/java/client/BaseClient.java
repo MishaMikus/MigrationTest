@@ -13,11 +13,11 @@ public class BaseClient {
 
     private final Logger LOGGER = Logger.getLogger(this.getClass());
 
-    private void startLog(String method, String path) {
+    public void startLog(String method, String path) {
         LOGGER.info("START [" + method + "]\t[" + path + "]");
     }
 
-    private void endLog(String method, String path, Object code, Date start) {
+    public void endLog(String method, String path, Object code, Date start) {
         LOGGER.info("END [" + method + "]\t" +
                 "[" + path + "]\t" +
                 "[code:" + code + "]\t" +
