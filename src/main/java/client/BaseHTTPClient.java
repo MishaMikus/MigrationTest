@@ -18,14 +18,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
 
-public class BaseHTTPClient extends BaseClient{
+public class BaseHTTPClient extends BaseClient {
 
     private Map<String, String> cookies = new HashMap<>();
 
     private final Logger LOGGER = Logger.getLogger(this.getClass());
+    Date startDate = new Date();
 
     ResponseModel call(RequestModel request) throws IOException {
-//startLog();
+        startLog(request.getMethod().toString(), request.getPath());
+
         //PATH
         URL url = new URL(request.getURL());
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -54,8 +56,11 @@ public class BaseHTTPClient extends BaseClient{
         //RESPONSE BY METHOD
 
         //RESPONSE
+        ResponseModel response = ResponseModel.transformHTTPResponse(con);
 
-        return ResponseModel.transformHTTPResponse(con);
+        endLog(request.getMethod().toString(), request.getPath(), response.getStatusCode(), startDate);
+
+        return response;
     }
 
     private void setParams(RequestModel request, HttpURLConnection con) throws IOException {
