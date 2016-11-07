@@ -173,12 +173,12 @@ public class MicoachBusinessObject {
         return true;
     }
 
-    public boolean readCustomTrainings(Integer itemsPerPage) {
+    public boolean readCustomTrainings(Integer itemsPerPage) throws IOException {
         readCustomTrainings(new Date(), 1, itemsPerPage);
         return true;
     }
 
-    private void readCustomTrainings(Date start, Integer page, Integer itemsPerPage) {
+    private void readCustomTrainings(Date start, Integer page, Integer itemsPerPage) throws IOException {
         response = micoachClient.getCustomTrainings(currentUser.getAccessToken(), itemsPerPage, page);
         Integer totalResults = responseParser.parseTotalResults(response);
         LOGGER.info("[user : " + currentUser.getEmail() + "]\t" +

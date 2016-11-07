@@ -2,6 +2,7 @@ package model;
 
 import com.jayway.restassured.response.Headers;
 import com.jayway.restassured.response.Response;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.HttpCookie;
@@ -11,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ResponseModel {
+    private static final Logger LOGGER = Logger.getLogger(ResponseModel.class);
+
     private String body;
     private Headers header;
     private Integer statusCode;
@@ -50,11 +53,15 @@ public class ResponseModel {
 
     public static ResponseModel transform(Response response) {
         ResponseModel res = new ResponseModel();
-
         //body
         java.util.Scanner s = new java.util.Scanner(response.body().asInputStream()).useDelimiter("\\A");
-        res.setBody(s.hasNext() ? s.next() : "");
-        s.close();
+        try {
+            res.setBody(s.hasNext() ? s.next() : "");
+            s.close();
+        } catch (Exception e) {
+            LOGGER.warn("response.body().asInputStream() parse ERROR");
+            e.printStackTrace();
+        }
 
         //header
         res.setHeader(response.headers());
@@ -68,6 +75,7 @@ public class ResponseModel {
     }
 
     public static ResponseModel transformHTTPResponse(HttpURLConnection con) throws IOException {
+        System.setProperty("javax.net.debug", "all");
         ResponseModel res = new ResponseModel();
         //statusCode
         res.setStatusCode(con.getResponseCode());

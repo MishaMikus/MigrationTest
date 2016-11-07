@@ -140,7 +140,7 @@ public class MicoachClient extends BaseRestAssureClient {
         return call(requestModel);
     }
 
-    public ResponseModel getCustomTrainings(String accessToken, Integer itemsPerPage, Integer page) {
+    public ResponseModel getCustomTrainings(String accessToken, Integer itemsPerPage, Integer page) throws IOException {
         RequestModel requestModel = new RequestModel();
         requestModel.setProtocol(PROTOCOL);
         requestModel.setHost(HOST);
