@@ -2,9 +2,17 @@ package model;
 
 import com.jayway.restassured.response.Headers;
 import com.jayway.restassured.response.Response;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import sun.misc.IOUtils;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.util.HashMap;
@@ -15,16 +23,24 @@ public class ResponseModel {
     private static final Logger LOGGER = Logger.getLogger(ResponseModel.class);
 
     private String body;
-    private Headers header;
     private Integer statusCode;
-    private Map<String, String> cookies;
+    private Map<String, String> cookiesMap;
+    private Map<String, String> headerMap;
 
-    public Map<String, String> getCookies() {
-        return cookies;
+    public Map<String, String> getCookiesMap() {
+        return cookiesMap;
     }
 
-    public void setCookies(Map<String, String> cookies) {
-        this.cookies = cookies;
+    public void setCookiesMap(Map<String, String> cookiesMap) {
+        this.cookiesMap = cookiesMap;
+    }
+
+    public Map<String, String> getHeaderMap() {
+        return headerMap;
+    }
+
+    public void setHeaderMap(Map<String, String> headerMap) {
+        this.headerMap = headerMap;
     }
 
     public String getBody() {
@@ -35,84 +51,60 @@ public class ResponseModel {
         this.body = body;
     }
 
-    public Headers getHeader() {
-        return header;
-    }
-
-    public void setHeader(Headers header) {
-        this.header = header;
-    }
 
     public Integer getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(Integer statusCode) {
+    private void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
     }
 
     public static ResponseModel transform(Response response) {
         ResponseModel res = new ResponseModel();
         //body
-        java.util.Scanner s = new java.util.Scanner(response.body().asInputStream()).useDelimiter("\\A");
-        try {
-            res.setBody(s.hasNext() ? s.next() : "");
-            s.close();
-        } catch (Exception e) {
-            LOGGER.warn("response.body().asInputStream() parse ERROR");
-            e.printStackTrace();
-        }
+        res.setBody(response.getBody().asString());
 
         //header
-        res.setHeader(response.headers());
+        for (com.jayway.restassured.response.Header header : response.headers()) {
+            if (res.getHeaderMap() == null) {
+                res.headerMap = new HashMap<>();
+            }
+            res.headerMap.put(header.getName(), header.getValue());
+        }
 
         //statusCode
         res.setStatusCode(response.statusCode());
 
         //cookies
-        res.setCookies(response.cookies());
+        res.setCookiesMap(response.cookies());
         return res;
     }
 
-    public static ResponseModel transformHTTPResponse(HttpURLConnection con) throws IOException {
-        System.setProperty("javax.net.debug", "all");
+    public static ResponseModel transformHTTPClientResponse(HttpResponse response) {
         ResponseModel res = new ResponseModel();
-        //statusCode
-        res.setStatusCode(con.getResponseCode());
-
-        if (res.getStatusCode() != 200) {
-            java.util.Scanner s = new java.util.Scanner(con.getErrorStream()).useDelimiter("\\A");
-            res.setBody(s.hasNext() ? s.next() : "");
-            s.close();
-        } else {
-            //body
-            java.util.Scanner s = new java.util.Scanner(con.getInputStream()).useDelimiter("\\A");
-            res.setBody(s.hasNext() ? s.next() : "");
-            s.close();
+        //body
+        try {
+            res.setBody(EntityUtils.toString(response.getEntity(), "UTF-8"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+
         //header
-        res.setHeader(transformHeader(con.getHeaderFields()));
-        //cookies
-        res.setCookies(transformCookie(con));
-        return res;
-    }
-
-    private static Map<String, String> transformCookie(HttpURLConnection con) {
-        Map<String, List<String>> headerFields = con.getHeaderFields();
-        List<String> cookiesHeader = headerFields.get("Set-Cookie");
-        Map<String, String> res = new HashMap<>();
-        if (cookiesHeader != null) {
-            for (String cookie : cookiesHeader) {
-                HttpCookie.parse(cookie);
-                res.put(cookie.split("=")[0], cookie.split("=")[1]);
+        for (Header header : response.getAllHeaders()) {
+            if (res.getHeaderMap() == null) {
+                res.headerMap = new HashMap<>();
             }
+            res.headerMap.put(header.getName(), header.getValue());
         }
+
+        //statusCode
+        res.setStatusCode(response.getStatusLine().getStatusCode());
+
+        //cookies
+       // res.setCookiesMap(response);
         return res;
     }
 
-    private static Headers transformHeader(Map<String, List<String>> headerFields) {
-        System.out.println(headerFields);
-        Headers res = new Headers();
-        return res;
-    }
 }

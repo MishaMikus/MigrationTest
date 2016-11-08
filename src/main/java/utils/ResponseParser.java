@@ -44,10 +44,10 @@ public class ResponseParser {
     }
 
     public Long parseWorkoutlIdFromLocation(ResponseModel response) {
-        if (response.getHeader().get("Location") == null) {
+        if (response.getHeaderMap().get("Location") == null) {
             return null;
         }
-        return new Long(response.getHeader().get("Location").getValue().split("/")[8] + "");
+        return new Long(response.getHeaderMap().get("Location").split("/")[8] + "");
     }
 
     public JSONArray parseWorkoutComponents(ResponseModel response) throws ParseException {
@@ -65,7 +65,7 @@ public class ResponseParser {
     }
 
     public String parseXCsrfToken(ResponseModel response) {
-        return response.getCookies().get("X-Csrf-Token");
+        return response.getCookiesMap().get("X-Csrf-Token");
     }
 
     public Boolean isNextPagePresent(ResponseModel response) {

@@ -18,8 +18,9 @@ import static org.testng.Assert.assertNotNull;
 @Listeners(InvoceMethodListener.class)
 public class MicoachGenerateUserTest extends BaseTest {
 
-    static final int USER_COUNT = 1;
-    static final int USER_THREAD_COUNT = 1;
+    static final int USER_COUNT = 10;
+    static final int USER_THREAD_COUNT = 10;
+    private static final int WORKOUT_COUNT = 300;
 
     private String BASE_USER_NAME;
     private String BASE_USER_PASSWORD;
@@ -31,16 +32,20 @@ public class MicoachGenerateUserTest extends BaseTest {
         BASE_USER_PASSWORD = prop.getProperty("authorization.basic.web.password");
         RestAssured.baseURI = "https://" + prop.getProperty("server.host");
     }
+
     @Test(invocationCount = USER_COUNT, threadPoolSize = USER_THREAD_COUNT)
     public void generateUserTest() throws IOException, ParseException, InterruptedException {
         MicoachBusinessObject micoachBusinessObject = new MicoachBusinessObject();
         micoachBusinessObject.setCurrentUser(UserProvider.generateNewUser(BASE_USER_NAME, BASE_USER_PASSWORD));
-        ResponseModel response= micoachBusinessObject.signUp();
-        assertNotNull(micoachBusinessObject.getCurrentUser().getAccessToken(),"AccessToken not found. signUp error : "+response.getBody());
+        ResponseModel response = micoachBusinessObject.signUp();
+        assertNotNull(micoachBusinessObject.getCurrentUser().getAccessToken(), "AccessToken not found. signUp error : " + response.getBody());
         micoachBusinessObject.login();
-        micoachBusinessObject.makeAndPostSCWorkouts();
-        micoachBusinessObject.makeAndPostGameWorkouts();
-        micoachBusinessObject.makeAndPostFreeRunWorkouts();
-        micoachBusinessObject.storeUser(micoachBusinessObject.getCurrentUser().getEmail()+"\t"+RestAssured.baseURI+"\t"+new Date());
+        micoachBusinessObject.makeAndPostSCWorkouts(WORKOUT_COUNT);
+        micoachBusinessObject.makeAndPostGameWorkouts(WORKOUT_COUNT);
+        micoachBusinessObject.makeAndPostFreeRunWorkouts(WORKOUT_COUNT);
+        micoachBusinessObject.storeUser(micoachBusinessObject.getCurrentUser().getEmail()
+                + "\t" + RestAssured.baseURI
+                + "\t" + new Date()
+                + "\t" + WORKOUT_COUNT + " workouts");
     }
 }

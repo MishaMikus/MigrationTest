@@ -1,5 +1,7 @@
 package utils;
 
+import org.apache.commons.codec.binary.Base64;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -62,8 +64,12 @@ public class StringFormatter {
     public static String makeProgressLogString(String methodName, Date startDate, int index, int size) {
         return "[" + methodName + "]\t" +
                 "[" + (index + 1) + "/" + size + "]\t" +
-                "[" + p(index+1, size) + " %]\t" +
-                String.format("%-40s", "[time ot end : " + getTimeToEnd(startDate, index, size) + "]\t") +
-                String.format("%-40s", "[elapsed : " + elapsed(startDate) + "]");
+                "[" + p(index + 1, size) + " %]\t" +
+                String.format("%-20s", "[time ot end : " + getTimeToEnd(startDate, index, size) + "]\t") +
+                String.format("%-20s", "[elapsed : " + elapsed(startDate) + "]");
+    }
+
+    public static String credentialsToBase64(String baseUserName, String baseUserPassword) {
+        return new String(Base64.encodeBase64((baseUserName + ":" + baseUserPassword).getBytes()));
     }
 }

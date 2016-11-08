@@ -15,7 +15,7 @@ public class RequestModel {
     private Map<String, Object> params = new HashMap<>();
     private String baseUserName;
     private String baseUserPassword;
-    private Method method;
+    private String method;
     private Boolean requestLog;
     private Boolean responseLog;
     private Boolean useCookie;
@@ -58,11 +58,6 @@ public class RequestModel {
         this.baseUserPassword = baseUserPassword;
     }
 
-    public void setHTTPMethod(Method method) {
-        this.method = method;
-    }
-
-
     public void setRequestLog(boolean requestLog) {
         this.requestLog = requestLog;
     }
@@ -89,10 +84,6 @@ public class RequestModel {
 
     public String getBaseUserPassword() {
         return baseUserPassword;
-    }
-
-    public Method getMethod() {
-        return method;
     }
 
     public Boolean getRequestLog() {
@@ -143,15 +134,19 @@ public class RequestModel {
         this.params = params;
     }
 
-    public void setMethod(Method method) {
-        this.method = method;
-    }
-
     public void setRequestLog(Boolean requestLog) {
         this.requestLog = requestLog;
     }
 
     public String getURL() {
         return protocol+host+path;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
     }
 }

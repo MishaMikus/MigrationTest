@@ -17,8 +17,8 @@ import static org.testng.Assert.assertTrue;
 @Listeners(InvoceMethodListener.class)
 public class MicoachMigrationTest extends BaseTest {
 
-    private static final int USER_COUNT = 100;
-    private static final int USER_THREAD_COUNT = 1;
+    private static final int USER_COUNT = 1000;
+    private static final int USER_THREAD_COUNT = 4;
 
     private String BASE_USER_NAME;
     private String BASE_USER_PASSWORD;

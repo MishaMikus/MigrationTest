@@ -26,7 +26,6 @@ public class MicoachBusinessObject {
 
     private static final long ONE_DAY_MS = 24L * 60L * 60L * 1000L;
     private static final int HISTORY_DEEP_DAY = 700;
-    private static final int WORKOUT_COUNT = 1;
     private Random random = new Random();
     private final Logger LOGGER = Logger.getLogger(this.getClass());
 
@@ -43,7 +42,7 @@ public class MicoachBusinessObject {
         return response;
     }
 
-    public void makeAndPostSCWorkouts() throws IOException, ParseException {
+    public void makeAndPostSCWorkouts(Integer WORKOUT_COUNT) throws IOException, ParseException {
         LOGGER.info("START makeAndPostSCWorkouts : " + currentUser.getEmail());
         Date startDate = new Date();
         for (int i = 0; i < WORKOUT_COUNT; i++) {
@@ -58,17 +57,17 @@ public class MicoachBusinessObject {
         LOGGER.info("END makeAndPostSCWorkouts : " + currentUser.getEmail());
     }
 
-    public void makeAndPostGameWorkouts() throws IOException, ParseException {
+    public void makeAndPostGameWorkouts(Integer workoutCount) throws IOException, ParseException {
         LOGGER.info("START makeAndPostGameWorkouts : " + currentUser.getEmail());
         Date startDate = new Date();
-        for (int i = 0; i < WORKOUT_COUNT; i++) {
+        for (int i = 0; i < workoutCount; i++) {
             Date date = makeRandDate();
             postGameWorkouts(date);
             if (currentUser.getWorkoutId() == null) {
                 login();
                 postGameWorkouts(date);
             }
-            LOGGER.info(StringFormatter.makeProgressLogString("makeAndPostGameWorkouts : " + currentUser.getEmail(), startDate, i, WORKOUT_COUNT));
+            LOGGER.info(StringFormatter.makeProgressLogString("makeAndPostGameWorkouts : " + currentUser.getEmail(), startDate, i, workoutCount));
         }
         LOGGER.info("END makeAndPostGameWorkouts : " + currentUser.getEmail());
     }
@@ -82,17 +81,17 @@ public class MicoachBusinessObject {
         micoachClient.postWorkouts(workoutProvider.makeGameWorkout(date, currentUser.getWorkoutFixtureGame(), workoutId), currentUser.getAccessToken());
     }
 
-    public void makeAndPostFreeRunWorkouts() throws IOException, ParseException {
+    public void makeAndPostFreeRunWorkouts(Integer workoutCount) throws IOException, ParseException {
         LOGGER.info("START makeAndPostFreeRunWorkouts : " + currentUser.getEmail());
         Date startDate = new Date();
-        for (int i = 0; i < WORKOUT_COUNT; i++) {
+        for (int i = 0; i < workoutCount; i++) {
             Date date = makeRandDate();
             postFreeRunWorkouts(date);
             if ("201".equals(currentUser.getFreeRunStatus())) {
                 login();
                 postFreeRunWorkouts(date);
             }
-            LOGGER.info(StringFormatter.makeProgressLogString("makeAndPostFreeRunWorkouts : " + currentUser.getEmail(), startDate, i, WORKOUT_COUNT));
+            LOGGER.info(StringFormatter.makeProgressLogString("makeAndPostFreeRunWorkouts : " + currentUser.getEmail(), startDate, i, workoutCount));
         }
         LOGGER.info("END makeAndPostFreeRunWorkouts : " + currentUser.getEmail());
     }

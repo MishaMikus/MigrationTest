@@ -1,5 +1,7 @@
 package client;
 
+import model.RequestModel;
+import model.ResponseModel;
 import org.apache.log4j.Logger;
 import utils.StringFormatter;
 
@@ -7,7 +9,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BaseClient {
+public abstract class BaseClient {
+
+    abstract ResponseModel call(RequestModel requestModel);
 
     private Map<String, String> cookies = new HashMap<>();
 

@@ -1,12 +1,10 @@
 package client;
 
-import com.jayway.restassured.internal.http.Method;
 import com.jayway.restassured.response.Response;
 import com.jayway.restassured.response.ValidatableResponse;
 import com.jayway.restassured.specification.RequestSpecification;
 import model.RequestModel;
 import model.ResponseModel;
-import utils.StringFormatter;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -23,7 +21,7 @@ public class BaseRestAssureClient extends BaseClient{
 
 
     ResponseModel call(RequestModel request) {
-        startLog(request.getMethod().toString(), request.getPath());
+        startLog(request.getMethod(), request.getPath());
         Date start = new Date();
 
         RequestSpecification requestSpecification = given();
@@ -92,50 +90,50 @@ public class BaseRestAssureClient extends BaseClient{
         ResponseModel res = null;
         if (validatableResponse != null) {
             res = ResponseModel.transform(validatableResponse.extract().response());
-            cookies = res.getCookies();
-            endLog(request.getMethod().toString(), request.getPath(), res.getStatusCode(), start);
+            cookies = res.getCookiesMap();
+            endLog(request.getMethod(), request.getPath(), res.getStatusCode(), start);
         } else {
-            endLog(request.getMethod().toString(), request.getPath(), "FAIL", start);
+            endLog(request.getMethod(), request.getPath(), "FAIL", start);
         }
         return res;
     }
 
-    private Response getResponseByMethod(RequestSpecification requestSpecification, Method method) {
+    private Response getResponseByMethod(RequestSpecification requestSpecification, String method) {
         requestSpecification = requestSpecification.when();
         Response response = null;
         if (method == null) {
             LOGGER.warn("requestModel HTTP method cannot be null");
         } else {
             switch (method) {
-                case GET: {
+                case "GET": {
                     response = requestSpecification.get();
                     break;
                 }
-                case PUT: {
+                case "PUT": {
                     response = requestSpecification.put();
                     break;
                 }
-                case POST: {
+                case "POST": {
                     response = requestSpecification.post();
                     break;
                 }
-                case DELETE: {
+                case "DELETE": {
                     response = requestSpecification.delete();
                     break;
                 }
-                case HEAD: {
+                case "HEAD": {
                     response = requestSpecification.head();
                     break;
                 }
-                case TRACE: {
+                case "TRACE": {
                     LOGGER.warn("TRACE is not yet implemented");
                     break;
                 }
-                case OPTIONS: {
+                case "OPTIONS": {
                     response = requestSpecification.options();
                     break;
                 }
-                case PATCH: {
+                case "PATCH": {
                     response = requestSpecification.patch();
                     break;
                 }

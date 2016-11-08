@@ -4,102 +4,126 @@ import model.RequestModel;
 import model.ResponseModel;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
 import org.apache.log4j.Logger;
-import org.json.simple.JSONObject;
+import utils.StringFormatter;
 
-import javax.xml.bind.DatatypeConverter;
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import javax.xml.ws.Response;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 public class BaseHTTPClient extends BaseClient {
 
-    private final String USER_AGENT = "Mozilla/5.0";
-
-    private Map<String, String> cookies = new HashMap<>();
-
     private final Logger LOGGER = Logger.getLogger(this.getClass());
-    Date startDate = new Date();
 
-    ResponseModel call(RequestModel requestModel) throws IOException {
-        startLog(requestModel.getMethod().toString(), requestModel.getPath());
+    ResponseModel call(RequestModel requestModel) {
+        Date startDate = new Date();
+        startLog(requestModel.getMethod(), requestModel.getPath());
 
+        ResponseModel responseModel = new ResponseModel();
+        //PATH
+        String fullPath = requestModel.getProtocol() + requestModel.getHost() + requestModel.getPath();
 
-        String url = "http://www.google.com/search?q=httpClient";
+        //METHOD
+        HttpPost request = new HttpPost(fullPath);
 
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpGet request = new HttpGet(url);
+        try {
+            StringEntity entity = new StringEntity(requestModel.getBody().toString());
 
-// add request header
-        request.addHeader("User-Agent", USER_AGENT);
-        HttpResponse response = client.execute(request);
+            //CONTENT_TYPE
+            entity.setContentType(requestModel.getContentType());
 
-        System.out.println("Response Code : "
-                + response.getStatusLine().getStatusCode());
+            //ENCODING
+            entity.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, requestModel.getContentType()));
 
-        BufferedReader rd = new BufferedReader(
-                new InputStreamReader(response.getEntity().getContent()));
+            //BODY
+            request.setEntity(entity);
 
-        StringBuffer result = new StringBuffer();
-        String line = "";
-        while ((line = rd.readLine()) != null) {
-            result.append(line);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
-
-
-        //CONTENT_TYPE
-       // con.setRequestProperty("Content-Type", request.getContentType());
-
-        //HEADERS
-       // con.setRequestProperty("User-Agent", USER_AGENT);
 
         //AUTH
-      //  con.setRequestProperty("Authorization", "Basic " + DatatypeConverter.printBase64Binary((request.getBaseUserName() + ":" + request.getBaseUserPassword()).getBytes()));
+        String basic = "Basic " + StringFormatter.credentialsToBase64(requestModel.getBaseUserName(), requestModel.getBaseUserPassword());
+        request.addHeader("Authorization", basic);
 
-        //PATH
-       // URL url = new URL(request.getURL());
-       // HttpURLConnection con = (HttpURLConnection) url.getContent();
-      //  con.setDoOutput(true);
+        HttpResponse response = null;
+        HttpClient httpclient = HttpClientBuilder.create().build();
+        try {
+            response = httpclient.execute(request);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        //BODY
-      //  OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
-      //  wr.write(request.getBody().toString());
-      //  wr.flush();
+        //HEADERS
+        //not yet implemented
 
         //PARAMS
-      //  setParams(request, con);
+        //not yet implemented
 
         //COOKIES
+        //not yet implemented
 
         //REQUEST_LOG
+        //not yet implemented
 
         //RESPONSE BY METHOD
+        //not yet implemented
 
         //RESPONSE
-      //  ResponseModel response = ResponseModel.transformHTTPResponse(con);
+        //not yet implemented
 
-       // endLog(request.getMethod().toString(), request.getPath(), response.getStatusCode(), startDate);
+        //RESPONSE_LOG
+        //not yet implemented
 
-      //  return response;
-        return null;
+        //RESPONSE_LOG_IF_ERROR
+        //not yet implemented
+
+        //RETURN
+        //not yet implemented
+        responseModel = ResponseModel.transformHTTPClientResponse(response);
+        endLog(requestModel.getMethod(), requestModel.getPath(), responseModel.getStatusCode(), startDate);
+        return responseModel;
     }
 
-    private void setParams(RequestModel request, HttpURLConnection con) throws IOException {
 
-        JSONObject body = new JSONObject();
-        for (Map.Entry<String, Object> entry : request.getParams().entrySet()) {
-            body.put(entry.getKey(), entry.getValue());
+    private ResponseModel getResponseByMethod(String method) {
+        if (method == null) {
+            LOGGER.warn("requestModel HTTP method cannot be null");
+        } else {
+            switch (method) {
+                case "GET": {
+                    break;
+                }
+                case "PUT": {
+                    break;
+                }
+                case "POST": {
+                    break;
+                }
+                case "DELETE": {
+                    break;
+                }
+                case "HEAD": {
+                    break;
+                }
+                case "TRACE": {
+                    break;
+                }
+                case "OPTIONS": {
+                    break;
+                }
+                case "PATCH": {
+                    break;
+                }
+            }
         }
-        OutputStream os = con.getOutputStream();
-        BufferedWriter writer = new BufferedWriter(
-                new OutputStreamWriter(os, "UTF-8"));
-        writer.write(body.toString());
-        writer.flush();
-        writer.close();
-        os.close();
+        return null;
     }
 }
 
