@@ -73,7 +73,6 @@ public class BaseRestAssureClient extends BaseClient {
         //RESPONSE BY METHOD
         Response response = getResponseByMethod(requestSpecification, requestModel.getMethod());
 
-
         //RESPONSE
         ValidatableResponse validatableResponse = null;
         if (response != null) {

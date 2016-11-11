@@ -20,7 +20,7 @@ import static org.testng.Assert.assertTrue;
 public class MicoachMigrationTest extends BaseTest {
 
     private static final int USER_COUNT = 100;
-    private static final int USER_THREAD_COUNT = 4;
+    private static final int USER_THREAD_COUNT = 2;
 
     private Integer ITEMS_PER_PAGE = 250;
     private String BASE_USER_NAME;
