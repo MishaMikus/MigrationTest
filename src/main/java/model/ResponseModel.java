@@ -1,22 +1,12 @@
 package model;
 
-import com.jayway.restassured.response.Headers;
 import com.jayway.restassured.response.Response;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
-import sun.misc.IOUtils;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpCookie;
-import java.net.HttpURLConnection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ResponseModel {
@@ -60,32 +50,35 @@ public class ResponseModel {
         this.statusCode = statusCode;
     }
 
-    public static ResponseModel transform(Response response) {
-        ResponseModel res = new ResponseModel();
+    public ResponseModel transform(Response response) {
         //body
-        res.setBody(response.getBody().asString());
+        body = response.getBody().asString();
 
         //header
         for (com.jayway.restassured.response.Header header : response.headers()) {
-            if (res.getHeaderMap() == null) {
-                res.headerMap = new HashMap<>();
+            if (headerMap == null) {
+                headerMap = new HashMap<>();
             }
-            res.headerMap.put(header.getName(), header.getValue());
+            headerMap.put(header.getName(), header.getValue());
         }
 
         //statusCode
-        res.setStatusCode(response.statusCode());
+        statusCode = response.statusCode();
 
         //cookies
-        res.setCookiesMap(response.cookies());
-        return res;
+        cookiesMap = response.getCookies();
+        return this;
     }
 
-    public static ResponseModel transformHTTPClientResponse(HttpResponse response) {
-        ResponseModel res = new ResponseModel();
+    private String convertStreamToString(java.io.InputStream is) {
+        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+        return s.hasNext() ? s.next() : "";
+    }
+
+    public ResponseModel transformHTTPClientResponse(HttpResponse response) {
         //body
         try {
-            res.setBody(EntityUtils.toString(response.getEntity(), "UTF-8"));
+            body = convertStreamToString(response.getEntity().getContent());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -93,18 +86,38 @@ public class ResponseModel {
 
         //header
         for (Header header : response.getAllHeaders()) {
-            if (res.getHeaderMap() == null) {
-                res.headerMap = new HashMap<>();
+            if (headerMap == null) {
+                headerMap = new HashMap<>();
             }
-            res.headerMap.put(header.getName(), header.getValue());
+            headerMap.put(header.getName(), header.getValue());
         }
 
         //statusCode
-        res.setStatusCode(response.getStatusLine().getStatusCode());
+        statusCode = response.getStatusLine().getStatusCode();
 
         //cookies
-       // res.setCookiesMap(response);
+        cookiesMap = parseCookieMap(headerMap.get("Set-Cookie"));
+
+        return this;
+    }
+
+    private Map<String, String> parseCookieMap(String cookies) {
+        Map<String, String> res = new HashMap<>();
+        if (cookies != null) {
+            for (String cookie : cookies.split(";")) {
+                res.put(cookie.split("=")[0].trim(), cookie.split("=")[1].trim());
+            }
+        }
         return res;
     }
 
+    @Override
+    public String toString() {
+        return "ResponseModel{" +
+                "body='" + body + '\'' +
+                ", statusCode=" + statusCode +
+                ", cookiesMap=" + cookiesMap +
+                ", headerMap=" + headerMap +
+                '}';
+    }
 }

@@ -1,7 +1,5 @@
 package model;
 
-import com.jayway.restassured.internal.http.Method;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -148,5 +146,25 @@ public class RequestModel {
 
     public void setMethod(String method) {
         this.method = method;
+    }
+
+    @Override
+    public String toString() {
+        return "RequestModel{" +
+                "path='" + path + '\'' +
+                ", contentType='" + contentType + '\'' +
+                ", protocol='" + protocol + '\'' +
+                ", host='" + host + '\'' +
+                ", body=" + body +
+                ", headers=" + headers +
+                ", params=" + params +
+                ", baseUserName='" + baseUserName + '\'' +
+                ", baseUserPassword='" + baseUserPassword + '\'' +
+                ", method='" + method + '\'' +
+                ", requestLog=" + requestLog +
+                ", responseLog=" + responseLog +
+                ", useCookie=" + useCookie +
+                ", responseIfErrorLog=" + responseIfErrorLog +
+                '}';
     }
 }

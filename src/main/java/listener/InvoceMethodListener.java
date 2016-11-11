@@ -26,5 +26,4 @@ public class InvoceMethodListener implements IInvokedMethodListener {
                 + " [result : " + (testResult.isSuccess() ? "SUCCESS" : "FAIL") + "]"
         );
     }
-
 }

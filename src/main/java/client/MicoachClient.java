@@ -7,16 +7,21 @@ import java.io.IOException;
 import java.util.Map;
 
 public class MicoachClient {
-    private static final String PROTOCOL = "https://";
-    private static final String HOST = "staging.micoach.adidas.com";
 
-   private BaseClient baseClient = new BaseRestAssureClient();
-   // private BaseClient baseClient=new BaseHTTPClient();
+    private BaseClient baseClient;
+    private String protocol;
+    private String host;
+
+    public MicoachClient(BaseClient client, String protocol, String host) {
+        baseClient = client;
+        this.protocol = protocol;
+        this.host = host;
+    }
 
     public ResponseModel postUser(Map<String, Object> signUpMap, String base_user_name, String base_user_password) throws IOException {
         RequestModel requestModel = new RequestModel();
-        requestModel.setProtocol(PROTOCOL);
-        requestModel.setProtocol(HOST);
+        requestModel.setProtocol(protocol);
+        requestModel.setHost(host);
         requestModel.setPath("/api/v3/users");
         requestModel.setContentType("application/json");
         requestModel.setBody(signUpMap);
@@ -30,8 +35,8 @@ public class MicoachClient {
 
     public ResponseModel postAuthorize(Map<String, Object> loginMapBody, String base_user_name, String base_user_password) throws IOException {
         RequestModel requestModel = new RequestModel();
-        requestModel.setProtocol(PROTOCOL);
-        requestModel.setHost(HOST);
+        requestModel.setProtocol(protocol);
+        requestModel.setHost(host);
         requestModel.setPath("/api/v3/OAuth2/Authorize");
         requestModel.setContentType("application/json");
         requestModel.setBody(loginMapBody);
@@ -44,8 +49,8 @@ public class MicoachClient {
 
     public ResponseModel getCustomtrainings(String accessToken) throws IOException {
         RequestModel requestModel = new RequestModel();
-        requestModel.setProtocol(PROTOCOL);
-        requestModel.setHost(HOST);
+        requestModel.setProtocol(protocol);
+        requestModel.setHost(host);
         requestModel.setPath("/api/v3/users/me/customtrainings");
         requestModel.setContentType("application/json");
         requestModel.putHeader("Authorization", "Bearer " + accessToken);
@@ -56,8 +61,8 @@ public class MicoachClient {
 
     public ResponseModel postWorkouts(String workout, String accessToken) throws IOException {
         RequestModel requestModel = new RequestModel();
-        requestModel.setProtocol(PROTOCOL);
-        requestModel.setHost(HOST);
+        requestModel.setProtocol(protocol);
+        requestModel.setHost(host);
         requestModel.setPath("/api/v3/users/me/workouts");
         requestModel.setContentType("application/json");
         requestModel.putHeader("Authorization", "Bearer " + accessToken);
@@ -69,8 +74,8 @@ public class MicoachClient {
 
     public ResponseModel getWorkouts(String fields, String type, String accessToken, Integer itemsPerPage, Integer page) throws IOException {
         RequestModel requestModel = new RequestModel();
-        requestModel.setProtocol(PROTOCOL);
-        requestModel.setHost(HOST);
+        requestModel.setProtocol(protocol);
+        requestModel.setHost(host);
         requestModel.setPath("/api/v3/users/me/workouts");
         requestModel.setContentType("application/json");
         requestModel.putHeader("Authorization", "Bearer " + accessToken);
@@ -85,8 +90,8 @@ public class MicoachClient {
 
     public ResponseModel getWorkoutsById(Long id, String accessToken) throws IOException {
         RequestModel requestModel = new RequestModel();
-        requestModel.setProtocol(PROTOCOL);
-        requestModel.setHost(HOST);
+        requestModel.setProtocol(protocol);
+        requestModel.setHost(host);
         requestModel.setPath("/api/v3/users/me/workouts/" + id);
         requestModel.setContentType("application/json");
         requestModel.putHeader("Authorization", "Bearer " + accessToken);
@@ -97,8 +102,8 @@ public class MicoachClient {
 
     public ResponseModel postApiV3UsersCheck(Map<String, Object> body, String base_user_name, String base_user_password) throws IOException {
         RequestModel requestModel = new RequestModel();
-        requestModel.setProtocol(PROTOCOL);
-        requestModel.setHost(HOST);
+        requestModel.setProtocol(protocol);
+        requestModel.setHost(host);
         requestModel.setPath("/api/v3/users/check");
         requestModel.setContentType("application/json");
         requestModel.setBaseUserName(base_user_name);
@@ -111,8 +116,8 @@ public class MicoachClient {
 
     public ResponseModel getAuthorize(String accessToken, String base_user_name, String base_user_password) throws IOException {
         RequestModel requestModel = new RequestModel();
-        requestModel.setProtocol(PROTOCOL);
-        requestModel.setHost(HOST);
+        requestModel.setProtocol(protocol);
+        requestModel.setHost(host);
         requestModel.setPath("/Account/Authorize");
         requestModel.setContentType("application/json");
         requestModel.setBaseUserName(base_user_name);
@@ -125,8 +130,8 @@ public class MicoachClient {
 
     public ResponseModel delete(String xCsrfToken, String base_user_name, String base_user_password) throws IOException {
         RequestModel requestModel = new RequestModel();
-        requestModel.setProtocol(PROTOCOL);
-        requestModel.setHost(HOST);
+        requestModel.setProtocol(protocol);
+        requestModel.setHost(host);
         requestModel.setPath("/api/v3/users/me");
         requestModel.setContentType("application/json");
         requestModel.setBaseUserName(base_user_name);
@@ -140,8 +145,8 @@ public class MicoachClient {
 
     public ResponseModel getCustomTrainings(String accessToken, Integer itemsPerPage, Integer page) throws IOException {
         RequestModel requestModel = new RequestModel();
-        requestModel.setProtocol(PROTOCOL);
-        requestModel.setHost(HOST);
+        requestModel.setProtocol(protocol);
+        requestModel.setHost(host);
         requestModel.setPath("/api/v3/users/me/CustomTrainings");
         requestModel.setContentType("application/json");
         requestModel.putHeader("Authorization", "Bearer " + accessToken);

@@ -4,15 +4,15 @@ import model.RequestModel;
 import model.ResponseModel;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.protocol.HTTP;
 import org.apache.log4j.Logger;
+import org.json.simple.JSONObject;
 import utils.StringFormatter;
 
-import javax.xml.ws.Response;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
@@ -23,107 +23,78 @@ public class BaseHTTPClient extends BaseClient {
 
     ResponseModel call(RequestModel requestModel) {
         Date startDate = new Date();
-        startLog(requestModel.getMethod(), requestModel.getPath());
-
-        ResponseModel responseModel = new ResponseModel();
         //PATH
-        String fullPath = requestModel.getProtocol() + requestModel.getHost() + requestModel.getPath();
+        String fullPath = makeParamPath(requestModel);
+        startLog(requestModel.getMethod(), fullPath);
+
+        HttpRequestBase request;
 
         //METHOD
-        HttpPost request = new HttpPost(fullPath);
-
-        try {
-            StringEntity entity = new StringEntity(requestModel.getBody().toString());
-
-            //CONTENT_TYPE
-            entity.setContentType(requestModel.getContentType());
-
-            //ENCODING
-            entity.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, requestModel.getContentType()));
+        if ("GET".equals(requestModel.getMethod())) {
+            request = new HttpGet(fullPath);
+        } else {
+            HttpPost requestPost = new HttpPost(fullPath);
 
             //BODY
-            request.setEntity(entity);
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            Object body = requestModel.getBody();
+            if (body instanceof Map) {
+                try {
+                    requestPost.setEntity(new StringEntity(new JSONObject((Map) requestModel.getBody()).toString()));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                if (body != null)
+                    try {
+                        requestPost.setEntity(new StringEntity(requestModel.getBody().toString()));
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+            }
+            request = requestPost;
         }
 
         //AUTH
-        String basic = "Basic " + StringFormatter.credentialsToBase64(requestModel.getBaseUserName(), requestModel.getBaseUserPassword());
-        request.addHeader("Authorization", basic);
-
-        HttpResponse response = null;
-        HttpClient httpclient = HttpClientBuilder.create().build();
-        try {
-            response = httpclient.execute(request);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (requestModel.getBaseUserName() != null && requestModel.getBaseUserPassword() != null) {
+            String basic = "Basic " + StringFormatter.credentialsToBase64(requestModel.getBaseUserName(), requestModel.getBaseUserPassword());
+            request.addHeader("Authorization", basic);
         }
 
         //HEADERS
-        //not yet implemented
+        for (Map.Entry<String, Object> entry : requestModel.getHeaders().entrySet()) {
+            request.addHeader(entry.getKey(), String.valueOf(entry.getValue()));
+        }
 
-        //PARAMS
-        //not yet implemented
-
-        //COOKIES
-        //not yet implemented
-
-        //REQUEST_LOG
-        //not yet implemented
-
-        //RESPONSE BY METHOD
-        //not yet implemented
-
-        //RESPONSE
-        //not yet implemented
-
-        //RESPONSE_LOG
-        //not yet implemented
-
-        //RESPONSE_LOG_IF_ERROR
-        //not yet implemented
-
-        //RETURN
-        //not yet implemented
-        responseModel = ResponseModel.transformHTTPClientResponse(response);
-        endLog(requestModel.getMethod(), requestModel.getPath(), responseModel.getStatusCode(), startDate);
+        //CONTENT TYPE
+        request.addHeader("Content-Type", requestModel.getContentType());
+        HttpResponse response = null;
+        HttpClient httpClient = HttpClientBuilder.create().build();
+        try {
+            response = httpClient.execute(request);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ResponseModel responseModel = new ResponseModel();
+        responseModel = responseModel.transformHTTPClientResponse(response);
+        try {
+            endLog(requestModel,responseModel, startDate);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return responseModel;
     }
 
+    private String makeParamPath(RequestModel requestModel) {
+        String res = requestModel.getProtocol() + requestModel.getHost() + requestModel.getPath();
 
-    private ResponseModel getResponseByMethod(String method) {
-        if (method == null) {
-            LOGGER.warn("requestModel HTTP method cannot be null");
-        } else {
-            switch (method) {
-                case "GET": {
-                    break;
-                }
-                case "PUT": {
-                    break;
-                }
-                case "POST": {
-                    break;
-                }
-                case "DELETE": {
-                    break;
-                }
-                case "HEAD": {
-                    break;
-                }
-                case "TRACE": {
-                    break;
-                }
-                case "OPTIONS": {
-                    break;
-                }
-                case "PATCH": {
-                    break;
-                }
+        if (requestModel.getParams() != null && requestModel.getParams().size() > 0) {
+            res = res + "?";
+            for (Map.Entry<String, Object> entry : requestModel.getParams().entrySet()) {
+                res = res + entry.getKey() + "=" + entry.getValue() + "&";
             }
+            res = res.substring(0, res.length() - 1);
         }
-        return null;
+        return res;
     }
 }
 

@@ -1,12 +1,16 @@
 package utils;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.log4j.Logger;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class StringFormatter {
+
+    private static final Logger LOGGER = Logger.getLogger(StringFormatter.class);
+
     public static String msToHumanTime(long millis) {
         long h = millis / (1000L * 60L * 60L);
         long m = millis / (1000L * 60L) - h * 60L;
@@ -70,6 +74,10 @@ public class StringFormatter {
     }
 
     public static String credentialsToBase64(String baseUserName, String baseUserPassword) {
-        return new String(Base64.encodeBase64((baseUserName + ":" + baseUserPassword).getBytes()));
+        String simpleString = baseUserName + ":" + baseUserPassword;
+        String res = new String(Base64.encodeBase64(simpleString.getBytes()));
+        LOGGER.info("credentialsToBase64(" + simpleString + ") = " + res);
+        return res;
+
     }
 }

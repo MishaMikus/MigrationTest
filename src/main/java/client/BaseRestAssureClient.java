@@ -1,5 +1,6 @@
 package client;
 
+import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.response.Response;
 import com.jayway.restassured.response.ValidatableResponse;
 import com.jayway.restassured.specification.RequestSpecification;
@@ -7,67 +8,70 @@ import model.RequestModel;
 import model.ResponseModel;
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.jayway.restassured.RestAssured.given;
 
-public class BaseRestAssureClient extends BaseClient{
+public class BaseRestAssureClient extends BaseClient {
 
     private Map<String, String> cookies = new HashMap<>();
 
     private final Logger LOGGER = Logger.getLogger(this.getClass());
 
+    ResponseModel call(RequestModel requestModel) {
 
-    ResponseModel call(RequestModel request) {
-        startLog(request.getMethod(), request.getPath());
+        startLog(requestModel.getMethod(), requestModel.getPath());
         Date start = new Date();
+        //Basic PATH
+        RestAssured.baseURI = requestModel.getProtocol() + requestModel.getHost();
 
         RequestSpecification requestSpecification = given();
 
         //PATH
-        if (request.getPath() != null) {
-            requestSpecification = requestSpecification.basePath(request.getPath());
+        if (requestModel.getPath() != null) {
+            requestSpecification = requestSpecification.basePath(requestModel.getPath());
         }
 
         //CONTENT_TYPE
-        if (request.getContentType() != null) {
-            requestSpecification = requestSpecification.contentType(request.getContentType());
+        if (requestModel.getContentType() != null) {
+            requestSpecification = requestSpecification.contentType(requestModel.getContentType());
         }
 
         //HEADERS
-        if (request.getHeaders().values().size() > 0) {
-            requestSpecification = requestSpecification.headers(request.getHeaders());
+        if (requestModel.getHeaders().values().size() > 0) {
+            requestSpecification = requestSpecification.headers(requestModel.getHeaders());
         }
 
         //BODY
-        if (request.getBody() != null) {
-            requestSpecification = requestSpecification.body(request.getBody());
+        if (requestModel.getBody() != null) {
+            requestSpecification = requestSpecification.body(requestModel.getBody());
         }
 
         //PARAMS
-        if (request.getParams().values().size() > 0) {
-            requestSpecification = requestSpecification.parameters(request.getParams());
+        if (requestModel.getParams().values().size() > 0) {
+            requestSpecification = requestSpecification.parameters(requestModel.getParams());
         }
 
         //COOKIES
-        if (request.getUseCookie() != null && request.getUseCookie()) {
+        if (requestModel.getUseCookie() != null && requestModel.getUseCookie()) {
             requestSpecification = requestSpecification.cookies(cookies);
         }
 
         //AUTH
-        if (request.getBaseUserName() != null && request.getBaseUserPassword() != null) {
-            requestSpecification = requestSpecification.auth().basic(request.getBaseUserName(), request.getBaseUserPassword());
+        if (requestModel.getBaseUserName() != null && requestModel.getBaseUserPassword() != null) {
+            requestSpecification = requestSpecification.auth().basic(requestModel.getBaseUserName(), requestModel.getBaseUserPassword());
         }
 
         //REQUEST_LOG
-        if (request.getRequestLog() != null && request.getRequestLog()) {
+        if (requestModel.getRequestLog() != null && requestModel.getRequestLog()) {
             requestSpecification = requestSpecification.log().all();
         }
 
         //RESPONSE BY METHOD
-        Response response = getResponseByMethod(requestSpecification, request.getMethod());
+        Response response = getResponseByMethod(requestSpecification, requestModel.getMethod());
 
 
         //RESPONSE
@@ -77,25 +81,28 @@ public class BaseRestAssureClient extends BaseClient{
         }
 
         //RESPONSE_LOG
-        if (validatableResponse != null && request.getResponseLog() != null && request.getResponseLog()) {
+        if (validatableResponse != null && requestModel.getResponseLog() != null && requestModel.getResponseLog()) {
             validatableResponse = validatableResponse.log().all();
         } else {
             //RESPONSE_LOG_IF_ERROR
-            if (validatableResponse != null && request.getResponseIfErrorLog() != null && request.getResponseIfErrorLog()) {
+            if (validatableResponse != null && requestModel.getResponseIfErrorLog() != null && requestModel.getResponseIfErrorLog()) {
                 validatableResponse = validatableResponse.log().ifError();
             }
         }
 
         //RETURN
-        ResponseModel res = null;
+        ResponseModel responseModel = new ResponseModel();
         if (validatableResponse != null) {
-            res = ResponseModel.transform(validatableResponse.extract().response());
-            cookies = res.getCookiesMap();
-            endLog(request.getMethod(), request.getPath(), res.getStatusCode(), start);
-        } else {
-            endLog(request.getMethod(), request.getPath(), "FAIL", start);
+            responseModel.transform(validatableResponse.extract().response());
+            cookies = responseModel.getCookiesMap();
+            try {
+                endLog(requestModel, responseModel, start);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        return res;
+
+        return responseModel;
     }
 
     private Response getResponseByMethod(RequestSpecification requestSpecification, String method) {

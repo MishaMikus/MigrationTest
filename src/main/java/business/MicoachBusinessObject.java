@@ -1,5 +1,8 @@
 package business;
 
+import client.BaseClient;
+import client.BaseHTTPClient;
+import client.BaseRestAssureClient;
 import client.MicoachClient;
 import model.ResponseModel;
 import utils.StringFormatter;
@@ -20,7 +23,7 @@ public class MicoachBusinessObject {
 
     private ResponseParser responseParser = new ResponseParser();
     private WorkoutProvider workoutProvider = new WorkoutProvider();
-    private MicoachClient micoachClient = new MicoachClient();
+    private MicoachClient micoachClient ;
     private UserModel currentUser;
     private ResponseModel response;
 
@@ -28,6 +31,10 @@ public class MicoachBusinessObject {
     private static final int HISTORY_DEEP_DAY = 700;
     private Random random = new Random();
     private final Logger LOGGER = Logger.getLogger(this.getClass());
+
+    public MicoachBusinessObject(BaseClient client,String protocol,String host) {
+        micoachClient = new MicoachClient(client,protocol,host);
+    }
 
     public ResponseModel signUp() throws IOException {
         response = micoachClient.postUser(currentUser.getSignUpMap(), currentUser.getBaseUserName(), currentUser.getBaseUserPassword());
@@ -74,7 +81,7 @@ public class MicoachBusinessObject {
 
     private void postGameWorkouts(Date date) throws IOException, ParseException {
         response = micoachClient.postWorkouts(workoutProvider.makeGameShedulWorkout(date), currentUser.getAccessToken());
-        Long workoutId = responseParser.parseWorkoutlIdFromLocation(response);
+        Long workoutId = responseParser.parseWorkoutIdFromLocation(response);
         currentUser.setWorkoutId(workoutId);
         response = micoachClient.getWorkoutsById(workoutId, currentUser.getAccessToken());
         currentUser.setWorkoutFixtureGame(responseParser.parseWorkoutFixtureGame(response));
@@ -121,7 +128,7 @@ public class MicoachBusinessObject {
             currentUser.setCustomTrainingIdSC(responseParser.parseCustomTrainingId(response));
         }
         response = micoachClient.postWorkouts(workoutProvider.makeScShedulWorkout(date, currentUser.getCustomTrainingIdSC()), currentUser.getAccessToken());
-        Long workoutId = responseParser.parseWorkoutlIdFromLocation(response);
+        Long workoutId = responseParser.parseWorkoutIdFromLocation(response);
         currentUser.setWorkoutId(workoutId);
         response = micoachClient.getWorkoutsById(workoutId, currentUser.getAccessToken());
         currentUser.setWorkoutComponents(responseParser.parseWorkoutComponents(response));
@@ -158,10 +165,11 @@ public class MicoachBusinessObject {
         LOGGER.info("[user : " + currentUser.getEmail() + "]\t" +
                 "[total workout count : " + totalResults + "]\t" +
                 "[total size  : " + StringFormatter.toGbMbKbString(response.getBody().getBytes().length) + "]\t" +
-                "[page : " + page + "]\t"
-        );
+                "[page : " + page + "]\t");
         if (responseParser.isNextPagePresent(response) != null && responseParser.isNextPagePresent(response)) {
             LOGGER.info(StringFormatter.makeProgressLogString("getWorkouts", start, page * itemsPerPage, totalResults));
+            response=null;
+            System.gc();
             readWorkouts(start, page + 1, itemsPerPage);
         }
         assertEquals(response.getStatusCode(), new Integer(200), "GET WORKOUTS ERROR : " + response.getBody());
