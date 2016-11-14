@@ -148,7 +148,7 @@ public class MicoachBusinessObject {
     }
 
     public void storeUser(String message) {
-        try (FileWriter fw = new FileWriter("users/userList_devdesign.txt", true); BufferedWriter bw = new BufferedWriter(fw); PrintWriter out = new PrintWriter(bw)) {
+        try (FileWriter fw = new FileWriter("users/userList.txt", true); BufferedWriter bw = new BufferedWriter(fw); PrintWriter out = new PrintWriter(bw)) {
             out.println(message);
         } catch (IOException e) {
             e.printStackTrace();
@@ -198,15 +198,5 @@ public class MicoachBusinessObject {
             readCustomTrainings(start, page + 1, itemsPerPage);
         }
         assertEquals(response.getStatusCode(), new Integer(200), "GET CUSTOM TRAININGS ERROR : " + response.getBody());
-    }
-
-    public void saveMigrationReport(Date startDate) throws IOException {
-        FileWriter fw = new FileWriter("users/migrateUserList.txt", true);
-        BufferedWriter bw = new BufferedWriter(fw);
-        PrintWriter out = new PrintWriter(bw);
-        out.println(currentUser.getEmail() + "\tmigrate\t" + (new Date().getTime() - startDate.getTime()) + "\t" + new Date());
-        out.close();
-        bw.close();
-        fw.close();
     }
 }

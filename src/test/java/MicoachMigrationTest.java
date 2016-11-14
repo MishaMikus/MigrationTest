@@ -11,7 +11,6 @@ import org.testng.annotations.Test;
 import provider.UserProvider;
 
 import java.io.IOException;
-import java.util.Date;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -20,7 +19,7 @@ import static org.testng.Assert.assertTrue;
 public class MicoachMigrationTest extends BaseTest {
 
     private static final int USER_COUNT = 100;
-    private static final int USER_THREAD_COUNT = 2;
+    private static final int USER_THREAD_COUNT = 4;
 
     private Integer ITEMS_PER_PAGE = 250;
     private String BASE_USER_NAME;
@@ -45,7 +44,6 @@ public class MicoachMigrationTest extends BaseTest {
 
     @Test(groups = "migration", invocationCount = USER_COUNT, threadPoolSize = USER_THREAD_COUNT)
     public void micoachMigrationTest() throws IOException, ParseException, InterruptedException {
-        Date startDate = new Date();
 
         //PREPARE CLIENT
         LOGGER.info("init Client :"+CLIENT.getClass()+"\t"+PROTOCOL+HOST);
@@ -68,8 +66,5 @@ public class MicoachMigrationTest extends BaseTest {
         LOGGER.info("READ CustomTrainings");
         assertTrue(micoachBusinessObject.readCustomTrainings(ITEMS_PER_PAGE), "MIGRATION ERROR for user : " + micoachBusinessObject.getCurrentUser());
 
-        //STORE RESULT
-        LOGGER.info("STORE RESULT");
-        micoachBusinessObject.saveMigrationReport(startDate);
     }
 }

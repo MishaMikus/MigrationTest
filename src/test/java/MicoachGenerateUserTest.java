@@ -18,9 +18,9 @@ import static org.testng.Assert.assertNotNull;
 @Listeners(InvoceMethodListener.class)
 public class MicoachGenerateUserTest extends BaseTest {
 
-    private static final int USER_COUNT = 1;
+    private static final int USER_COUNT = 10;
     private static final int USER_THREAD_COUNT = 1;
-    private static final int WORKOUT_COUNT = 1;
+    private static final int WORKOUT_COUNT = 50;
 
     //private static final BaseClient CLIENT = new BaseHTTPClient();
     private static final BaseClient CLIENT = new BaseRestAssureClient();
