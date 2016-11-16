@@ -17,8 +17,8 @@ import static org.testng.Assert.assertTrue;
 @Listeners(InvoceMethodListener.class)
 public class MicoachMigrationTest extends BaseTest {
 
-    private static final int USER_COUNT = 100;
-    private static final int USER_THREAD_COUNT = 8;
+    private static final int USER_COUNT = 1;
+    private static final int USER_THREAD_COUNT = 1;
 
     private final Logger LOGGER = Logger.getLogger(this.getClass());
 
