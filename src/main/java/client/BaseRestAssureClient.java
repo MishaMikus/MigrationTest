@@ -93,14 +93,13 @@ public class BaseRestAssureClient extends BaseClient {
         ResponseModel responseModel = new ResponseModel();
         if (validatableResponse != null) {
             responseModel.transform(validatableResponse.extract().response());
-            cookies = responseModel.getCookiesMap();
+            cookies.putAll(responseModel.getCookiesMap());
             try {
                 endLog(requestModel, responseModel, start);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
         return responseModel;
     }
 

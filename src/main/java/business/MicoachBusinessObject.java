@@ -1,8 +1,6 @@
 package business;
 
 import client.BaseClient;
-import client.BaseHTTPClient;
-import client.BaseRestAssureClient;
 import client.MicoachClient;
 import model.ResponseModel;
 import utils.StringFormatter;
@@ -15,6 +13,8 @@ import utils.ResponseParser;
 import java.io.*;
 import java.util.Date;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import static org.testng.Assert.assertEquals;
@@ -198,5 +198,13 @@ public class MicoachBusinessObject {
             readCustomTrainings(start, page + 1, itemsPerPage);
         }
         assertEquals(response.getStatusCode(), new Integer(200), "GET CUSTOM TRAININGS ERROR : " + response.getBody());
+    }
+
+    public ResponseModel migration(String status) throws UnsupportedEncodingException {
+        Map<String,String> body =new HashMap<>();
+        body.put("requestId","some id provided by runtastic");
+        body.put("status",status);
+        body.put("state","some info to troubleshot");
+        return micoachClient.migration(currentUser.getAccessToken(),body);
     }
 }
