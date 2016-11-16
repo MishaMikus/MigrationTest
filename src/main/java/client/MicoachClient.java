@@ -45,7 +45,7 @@ public class MicoachClient {
         requestModel.setBaseUserPassword(base_user_password);
         requestModel.setMethod("POST");
         requestModel.setUseCookie(true);
-        requestModel.setResponseLog(true);
+      //  requestModel.setResponseLog(true);
         return baseClient.call(requestModel);
     }
 

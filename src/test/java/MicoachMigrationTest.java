@@ -43,9 +43,9 @@ public class MicoachMigrationTest extends BaseTest {
         ResponseModel loginResponse = micoachBusinessObject.login();
         assertEquals(loginResponse.getStatusCode(), new Integer(200), "LOGIN FAIL : " + loginResponse.getBody());
 
-        //MIGRATION_STATUS_START
-        LOGGER.info("MIGRATION STATUS START");
-        micoachBusinessObject.migration("started");
+//        //MIGRATION_STATUS_START
+//        LOGGER.info("MIGRATION STATUS START");
+//        micoachBusinessObject.migration("started");
 
         //READ WORKOUTS
         LOGGER.info("READ WORKOUTS");
@@ -55,9 +55,9 @@ public class MicoachMigrationTest extends BaseTest {
         LOGGER.info("READ CustomTrainings");
         assertTrue(micoachBusinessObject.readCustomTrainings(ITEMS_PER_PAGE), "MIGRATION ERROR for user : " + micoachBusinessObject.getCurrentUser());
 
-        //MIGRATION_STATUS_COMPLETED
-        LOGGER.info("MIGRATION STATUS COMPLETED");
-        micoachBusinessObject.migration("completed");
+//        //MIGRATION_STATUS_COMPLETED
+//        LOGGER.info("MIGRATION STATUS COMPLETED");
+//        micoachBusinessObject.migration("completed");
 
     }
 
