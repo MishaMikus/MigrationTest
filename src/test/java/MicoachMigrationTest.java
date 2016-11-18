@@ -67,8 +67,8 @@ public class MicoachMigrationTest extends BaseTest {
 
     private void validateLoginResponseForMigration(ResponseModel loginResponse) {
         assertEquals(loginResponse.getStatusCode(), new Integer(200), "LOGIN FAIL : " + loginResponse.getBody());
-        assertThat(loginResponse.getBody(), containsString("scope_user_trainings_read"));
-        assertThat(loginResponse.getBody(), containsString("scope_user_migrate"));
+//        assertThat(loginResponse.getBody(), containsString("scope_user_trainings_read"));
+//        assertThat(loginResponse.getBody(), containsString("scope_user_migrate"));
     }
 
 }
