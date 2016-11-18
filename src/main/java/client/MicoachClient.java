@@ -45,7 +45,7 @@ public class MicoachClient {
         requestModel.setBaseUserPassword(base_user_password);
         requestModel.setMethod("POST");
         requestModel.setUseCookie(true);
-      //  requestModel.setResponseLog(true);
+       // requestModel.setResponseLog(true);
         return baseClient.call(requestModel);
     }
 
@@ -58,6 +58,8 @@ public class MicoachClient {
         requestModel.putHeader("Authorization", "Bearer " + accessToken);
         requestModel.setMethod("GET");
         requestModel.setUseCookie(true);
+      //  requestModel.setResponseLog(true);
+      //  requestModel.setRequestLog(true);
         return baseClient.call(requestModel);
     }
 
@@ -156,20 +158,23 @@ public class MicoachClient {
         requestModel.putParam("page", page);
         requestModel.setMethod("GET");
         requestModel.setUseCookie(true);
+       // requestModel.setResponseLog(true);
+       // requestModel.setRequestLog(true);
         return baseClient.call(requestModel);
     }
 
     public ResponseModel migration(String accessToken, Map<String, String> body) throws UnsupportedEncodingException {
         RequestModel requestModel = new RequestModel();
-        requestModel.setProtocol(protocol);
-        requestModel.setHost(host);
-        requestModel.setPath("/api/v3/users/me/migration");
+        requestModel.setProtocol("http://");
+        requestModel.setHost("api."+host);
+        requestModel.setPath("/v3/users/me/migration");
         requestModel.setContentType("application/json");
         requestModel.putHeader("Authorization", "Bearer " + accessToken);
+        requestModel.setBody(body);
         requestModel.setMethod("POST");
         requestModel.setUseCookie(true);
-        requestModel.setResponseLog(true);
-        requestModel.setRequestLog(true);
+       // requestModel.setResponseLog(true);
+       // requestModel.setRequestLog(true);
         return baseClient.call(requestModel);
     }
 }

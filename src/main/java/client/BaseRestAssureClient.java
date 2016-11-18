@@ -78,7 +78,7 @@ public class BaseRestAssureClient extends BaseClient {
         if (response != null) {
             validatableResponse = response.then();
         }
-
+        validatableResponse.log();
         //RESPONSE_LOG
         if (validatableResponse != null && requestModel.getResponseLog() != null && requestModel.getResponseLog()) {
             validatableResponse = validatableResponse.log().all();
