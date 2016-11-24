@@ -1,9 +1,9 @@
 package client;
 
-import com.jayway.restassured.RestAssured;
-import com.jayway.restassured.response.Response;
-import com.jayway.restassured.response.ValidatableResponse;
-import com.jayway.restassured.specification.RequestSpecification;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
 import model.RequestModel;
 import model.ResponseModel;
 import org.apache.log4j.Logger;
@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.jayway.restassured.RestAssured.given;
+import static io.restassured.RestAssured.given;
 
 public class BaseRestAssureClient extends BaseClient {
 
@@ -22,9 +22,9 @@ public class BaseRestAssureClient extends BaseClient {
     private final Logger LOGGER = Logger.getLogger(this.getClass());
 
     ResponseModel call(RequestModel requestModel) {
-
+        ResponseModel responseModel = new ResponseModel();
         startLog(requestModel.getMethod(), requestModel.getPath());
-        Date start = new Date();
+
         //Basic PATH
         RestAssured.baseURI = requestModel.getProtocol() + requestModel.getHost();
 
@@ -70,16 +70,23 @@ public class BaseRestAssureClient extends BaseClient {
             requestSpecification = requestSpecification.log().all();
         }
 
+        //===========SEND============
+        Date start=new Date();
+
         //RESPONSE BY METHOD
         Response response = getResponseByMethod(requestSpecification, requestModel.getMethod());
+
+        //TIME
+        responseModel.setResponseTime(response.time());
 
         //RESPONSE
         ValidatableResponse validatableResponse = null;
         if (response != null) {
             validatableResponse = response.then();
         }
-        validatableResponse.log();
+
         //RESPONSE_LOG
+        validatableResponse.log();
         if (validatableResponse != null && requestModel.getResponseLog() != null && requestModel.getResponseLog()) {
             validatableResponse = validatableResponse.log().all();
         } else {
@@ -90,12 +97,11 @@ public class BaseRestAssureClient extends BaseClient {
         }
 
         //RETURN
-        ResponseModel responseModel = new ResponseModel();
         if (validatableResponse != null) {
             responseModel.transform(validatableResponse.extract().response());
             cookies.putAll(responseModel.getCookiesMap());
             try {
-                endLog(requestModel, responseModel, start);
+                endLog(requestModel, responseModel);
             } catch (IOException e) {
                 e.printStackTrace();
             }

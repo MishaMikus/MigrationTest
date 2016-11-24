@@ -1,6 +1,5 @@
 package utils;
 
-import com.jayway.restassured.path.json.JsonPath;
 import model.ResponseModel;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;

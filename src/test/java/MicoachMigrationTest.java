@@ -20,7 +20,7 @@ import static org.testng.Assert.assertTrue;
 public class MicoachMigrationTest extends BaseTest {
 
     private static final int USER_COUNT = 100;
-    private static final int USER_THREAD_COUNT = 5;
+    private static final int USER_THREAD_COUNT = 1;
 
     private final Logger LOGGER = Logger.getLogger(this.getClass());
 
@@ -54,21 +54,15 @@ public class MicoachMigrationTest extends BaseTest {
         LOGGER.info("READ WORKOUTS");
         assertTrue(micoachBusinessObject.readWorkouts(ITEMS_PER_PAGE), "MIGRATION ERROR for user : " + micoachBusinessObject.getCurrentUser());
 
-//        //READ CustomTrainings
-//        LOGGER.info("READ CustomTrainings");
-//        assertTrue(micoachBusinessObject.readCustomTrainings(ITEMS_PER_PAGE), "MIGRATION ERROR for user : " + micoachBusinessObject.getCurrentUser());
+        //READ CustomTrainings
+        LOGGER.info("READ CustomTrainings");
+        assertTrue(micoachBusinessObject.readCustomTrainings(ITEMS_PER_PAGE), "MIGRATION ERROR for user : " + micoachBusinessObject.getCurrentUser());
 
         //MIGRATION_STATUS_COMPLETED
         migrationStatus="completed";
         LOGGER.info("MIGRATION STATUS COMPLETED : "+migrationStatus);
         migrateResponse = micoachBusinessObject.migration(migrationStatus);
         assertEquals(migrateResponse.getStatusCode(), new Integer(201), "MIGRATION_STATUS("+migrationStatus+")_POST FAIL : " + migrateResponse.getBody());
-    }
-
-    private void validateLoginResponseForMigration(ResponseModel loginResponse) {
-        assertEquals(loginResponse.getStatusCode(), new Integer(200), "LOGIN FAIL : " + loginResponse.getBody());
-//        assertThat(loginResponse.getBody(), containsString("scope_user_trainings_read"));
-//        assertThat(loginResponse.getBody(), containsString("scope_user_migrate"));
     }
 
 }

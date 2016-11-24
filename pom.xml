@@ -19,24 +19,32 @@
             </plugin>
         </plugins>
     </build>
+
+    <properties>
+        <rest-assured.version>3.0.0</rest-assured.version>
+        <mail.version>1.4.7</mail.version>
+        <testng.version>6.9.13.6</testng.version>
+    </properties>
+
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
-            <version>1.4</version>
+            <version>${mail.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>6.8.8</version>
+            <version>${testng.version}</version>
         </dependency>
 
+
         <dependency>
-            <groupId>com.jayway.restassured</groupId>
+            <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
-            <version>2.5.0</version>
+            <version>${rest-assured.version}</version>
         </dependency>
 
         <dependency>

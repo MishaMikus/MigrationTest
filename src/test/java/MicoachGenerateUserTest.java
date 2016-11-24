@@ -1,4 +1,4 @@
-import com.jayway.restassured.RestAssured;
+import io.restassured.RestAssured;
 import listener.InvoceMethodListener;
 import model.ResponseModel;
 import org.json.simple.parser.ParseException;

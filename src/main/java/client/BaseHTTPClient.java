@@ -39,7 +39,7 @@ public class BaseHTTPClient extends BaseClient {
             Object body = requestModel.getBody();
             if (body instanceof Map) {
                 try {
-                    requestPost.setEntity(new StringEntity(new JSONObject((Map) requestModel.getBody()).toString()));
+                    requestPost.setEntity(new StringEntity(new JSONObject((Map)body).toString()));
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
@@ -77,7 +77,7 @@ public class BaseHTTPClient extends BaseClient {
         ResponseModel responseModel = new ResponseModel();
         responseModel = responseModel.transformHTTPClientResponse(response);
         try {
-            endLog(requestModel,responseModel, startDate);
+            endLog(requestModel,responseModel);
         } catch (IOException e) {
             e.printStackTrace();
         }

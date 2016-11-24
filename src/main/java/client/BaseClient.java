@@ -3,7 +3,6 @@ package client;
 import model.RequestModel;
 import model.ResponseModel;
 import org.apache.log4j.Logger;
-import utils.StringFormatter;
 
 import java.io.*;
 import java.text.ParseException;
@@ -20,21 +19,21 @@ public abstract class BaseClient {
         LOGGER.info("START [" + method + "]\t[" + path + "]");
     }
 
-    public void endLog(RequestModel requestModel, ResponseModel responseModel, Date start) throws IOException {
+    public void endLog(RequestModel requestModel, ResponseModel responseModel) throws IOException {
         LOGGER.info("END [" + requestModel.getMethod() + "]\t" +
                 "[" + requestModel.getPath() + "]\t" +
-                "[code:" + responseModel.getStatusCode() + "]\t" +
-                "[responseTime : " + StringFormatter.elapsed(start) + "]");
-        storeSummary(requestModel, responseModel, start);
+                "[code : " + responseModel.getStatusCode() + "]\t" +
+                "[responseTime : " + responseModel.getResponseTime() + "]");
+        storeSummary(requestModel, responseModel);
     }
 
-    private void storeSummary(RequestModel requestModel, ResponseModel responseModel, Date start) throws IOException {
+    private void storeSummary(RequestModel requestModel, ResponseModel responseModel) throws IOException {
         Date now = new Date();
         FileWriter fw = new FileWriter(generateSummaryFileName(), true);
         BufferedWriter bw = new BufferedWriter(fw);
         PrintWriter out = new PrintWriter(bw);
         int bodySize = responseModel.getBody().length();
-        Long elapsed = now.getTime() - start.getTime();
+        Long elapsed = responseModel.getResponseTime();
         String date = responseModel.getHeaderMap().get("Date");
         SimpleDateFormat sdf = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss Z");
         Date parsedDate= now;

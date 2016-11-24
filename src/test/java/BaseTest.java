@@ -1,10 +1,19 @@
 import client.BaseClient;
 import client.BaseRestAssureClient;
 import listener.InvoceMethodListener;
+import model.ResponseModel;
+import org.json.simple.JSONArray;
 import org.testng.annotations.Listeners;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
+
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 @Listeners(InvoceMethodListener.class)
 public class BaseTest {
@@ -46,5 +55,11 @@ public class BaseTest {
         new File("target/report.csv").delete();
     }
 
+    public void validateLoginResponseForMigration(ResponseModel loginResponse) {
+        assertEquals(loginResponse.getStatusCode(), new Integer(200), "LOGIN FAIL : " + loginResponse.getBody());
+        JSONArray scopeArray = (JSONArray) loginResponse.getBodyAsJson().get("scope");
+        assertTrue(scopeArray.contains("scope_user_trainings_read"),"scopeArray : "+scopeArray);
+        assertTrue(scopeArray.contains("scope_user_migrate"),"scopeArray : "+scopeArray);
+    }
 
 }
