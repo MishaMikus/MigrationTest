@@ -4,7 +4,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class UserModel {
     private String email;
@@ -75,6 +77,8 @@ public class UserModel {
     }
 
     public JSONArray getWorkoutComponents() {
+
+        Set<String> set=new HashSet<>();
         return workoutComponents;
     }
 

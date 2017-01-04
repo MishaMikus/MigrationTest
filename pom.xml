@@ -21,7 +21,7 @@
     </build>
 
     <properties>
-        <rest-assured.version>3.0.0</rest-assured.version>
+        <rest-assured.version>3.0.1</rest-assured.version>
         <mail.version>1.4.7</mail.version>
         <testng.version>6.9.13.6</testng.version>
     </properties>

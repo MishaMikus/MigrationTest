@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -115,6 +116,7 @@ public class BaseRestAssureClient extends BaseClient {
         if (method == null) {
             LOGGER.warn("requestModel HTTP method cannot be null");
         } else {
+            try{
             switch (method) {
                 case "GET": {
                     response = requestSpecification.get();
@@ -148,6 +150,8 @@ public class BaseRestAssureClient extends BaseClient {
                     response = requestSpecification.patch();
                     break;
                 }
+            }}catch (Exception e){
+                e.printStackTrace();
             }
         }
         return response;

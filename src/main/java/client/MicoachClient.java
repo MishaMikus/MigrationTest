@@ -178,4 +178,18 @@ public class MicoachClient {
         // requestModel.setRequestLog(true);
         return baseClient.call(requestModel);
     }
+
+    public ResponseModel migrationStatusRead(String accessToken) throws UnsupportedEncodingException {
+        RequestModel requestModel = new RequestModel();
+        requestModel.setProtocol("http://");
+        requestModel.setHost("api." + host);
+        requestModel.setPath("/v3/users/me/migration");
+        requestModel.setContentType("application/json");
+        requestModel.putHeader("Authorization", "Bearer " + accessToken);
+        requestModel.setMethod("GET");
+        requestModel.setUseCookie(true);
+         //requestModel.setResponseLog(true);
+         //requestModel.setRequestLog(true);
+        return baseClient.call(requestModel);
+    }
 }

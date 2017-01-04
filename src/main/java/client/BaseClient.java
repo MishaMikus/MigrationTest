@@ -93,4 +93,5 @@ public abstract class BaseClient {
     private String generateSummaryFileName() {
         return "target" + File.separator + getMainClassName() + "_summary.csv";
     }
+
 }

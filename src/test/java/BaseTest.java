@@ -17,13 +17,6 @@ import static org.testng.Assert.assertTrue;
 
 @Listeners(InvoceMethodListener.class)
 public class BaseTest {
-
-    static final int USER_COUNT = 1;
-    static final int USER_THREAD_COUNT = 1;
-
-    static final int WORKOUT_COUNT = 50;
-
-    Integer ITEMS_PER_PAGE = 250;
     String BASE_USER_NAME;
     String BASE_USER_PASSWORD;
     String PROTOCOL = "https://";

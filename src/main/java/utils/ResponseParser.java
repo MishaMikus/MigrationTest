@@ -1,5 +1,6 @@
 package utils;
 
+import io.restassured.path.json.JsonPath;
 import model.ResponseModel;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -14,7 +15,10 @@ public class ResponseParser {
         String res;
         if (new Integer(200).equals(response.getStatusCode())) {
             //res = new JsonPath(response.getBody()).getString("accessToken");
+
              res = stringBetween(response.getBody(), "\"accessToken\":\"", "\",\"");
+            System.out.println(response.getBody());
+            System.out.println(res);
             if (res.isEmpty()) {
                 LOGGER.warn("Cannot Find accessToken : " + response.getBody());
             }
@@ -24,7 +28,19 @@ public class ResponseParser {
             return null;
         }
     }
-
+    public String parseAccessTokenCompass(ResponseModel response) {
+        String res;
+        if (new Integer(200).equals(response.getStatusCode())) {
+            res = new JsonPath(response.getBody()).getString("restOauthAccessTokenResponse.access_token");
+            if (res.isEmpty()) {
+                LOGGER.warn("Cannot Find accessToken : " + response.getBody());
+            }
+            return res;
+        } else {
+            LOGGER.warn("JSON PARSING ERROR : " + response.getBody());
+            return null;
+        }
+    }
     private String stringBetween(String input, String a, String b) {
         return input.substring(input.indexOf(a) + a.length(), input.indexOf(b));
     }
@@ -89,6 +105,20 @@ public class ResponseParser {
             String a = "\"totalResults\":";
             String b = ",\"results\":[";
             return Integer.parseInt(response.getBody().substring(response.getBody().indexOf(a) + a.length(), response.getBody().indexOf(b)));
+        } else {
+            LOGGER.warn("JSON PARSING ERROR : " + response.getBody());
+            return null;
+        }
+    }
+
+    public String parseAccessTokenPF(ResponseModel response) {
+        String res;
+        if (new Integer(200).equals(response.getStatusCode())) {
+            res = new JsonPath(response.getBody()).getString("access_token");
+            if (res.isEmpty()) {
+                LOGGER.warn("Cannot Find accessToken : " + response.getBody());
+            }
+            return res;
         } else {
             LOGGER.warn("JSON PARSING ERROR : " + response.getBody());
             return null;

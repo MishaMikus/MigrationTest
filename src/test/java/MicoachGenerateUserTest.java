@@ -2,6 +2,7 @@ import io.restassured.RestAssured;
 import listener.InvoceMethodListener;
 import model.ResponseModel;
 import org.json.simple.parser.ParseException;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import provider.UserProvider;
@@ -13,6 +14,17 @@ import static org.testng.Assert.assertNotNull;
 
 @Listeners(InvoceMethodListener.class)
 public class MicoachGenerateUserTest extends BaseTest {
+
+    private static final int USER_COUNT = 10;
+    private static final int USER_THREAD_COUNT = 1;
+
+    private static final int WORKOUT_COUNT = 42;
+
+    @BeforeClass
+    public void setUp() throws IOException {
+        prepare(this.getClass().getSimpleName());
+    }
+
     @Test(invocationCount = USER_COUNT, threadPoolSize = USER_THREAD_COUNT)
     public void generateUserTest() throws IOException, ParseException, InterruptedException {
         MicoachBusinessObject micoachBusinessObject = new MicoachBusinessObject(CLIENT, PROTOCOL, HOST);

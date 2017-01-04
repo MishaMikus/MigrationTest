@@ -8,7 +8,8 @@ import java.io.IOException;
 
 @Listeners(InvoceMethodListener.class)
 public class MicoachSignUpDeleteUserUseCaseTest extends BaseTest {
-
+    private static final int USER_COUNT = 1;
+    private static final int USER_THREAD_COUNT = 1;
     @Test(groups = "migration", invocationCount = USER_COUNT, threadPoolSize = USER_THREAD_COUNT)
     public void signUpDeleteUserUseCaseTest() throws IOException {
         MicoachBusinessObject micoachBusinessObject = new MicoachBusinessObject(CLIENT,PROTOCOL,HOST);

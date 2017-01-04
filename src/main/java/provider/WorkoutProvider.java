@@ -136,7 +136,18 @@ public class WorkoutProvider {
             LOGGER.info("END READ post_workout/run dir");
         }
         int index = random.nextInt(freeRunWorkoutJsonList.size());
+        //int index = freeRunWorkoutJsonList.size()-1;
         LOGGER.info("POST post_workout/run " + index);
         return freeRunWorkoutJsonList.get(index);
+    }
+
+    public String makeFreeRunWorkoutMarathon(Date date,String filePath) throws IOException, ParseException {
+        JSONObject res = loadJsonFromFile(new File(filePath).getAbsolutePath());
+        Date now = new Date(date.getTime() - HOUR_MS * 2);
+        Date startDateTime = new Date(now.getTime() - HOUR_MS * 2);
+        res.put("startDateTime", StringFormatter.makeJSONDateString(startDateTime));
+        res.put("startDateTimeUTC", StringFormatter.makeJSONDateString(startDateTime));
+        res.put("stopDateTime", StringFormatter.makeJSONDateString(now));
+        return res.toString();
     }
 }

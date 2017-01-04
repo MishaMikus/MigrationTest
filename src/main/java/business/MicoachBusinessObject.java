@@ -3,6 +3,7 @@ package business;
 import client.BaseClient;
 import client.MicoachClient;
 import model.ResponseModel;
+import org.json.simple.JSONArray;
 import utils.StringFormatter;
 import model.UserModel;
 import org.apache.log4j.Logger;
@@ -23,7 +24,7 @@ public class MicoachBusinessObject {
 
     private ResponseParser responseParser = new ResponseParser();
     private WorkoutProvider workoutProvider = new WorkoutProvider();
-    private MicoachClient micoachClient ;
+    private MicoachClient micoachClient;
     private UserModel currentUser;
     private ResponseModel response;
 
@@ -32,8 +33,8 @@ public class MicoachBusinessObject {
     private Random random = new Random();
     private final Logger LOGGER = Logger.getLogger(this.getClass());
 
-    public MicoachBusinessObject(BaseClient client,String protocol,String host) {
-        micoachClient = new MicoachClient(client,protocol,host);
+    public MicoachBusinessObject(BaseClient client, String protocol, String host) {
+        micoachClient = new MicoachClient(client, protocol, host);
     }
 
     public ResponseModel signUp() throws IOException {
@@ -168,7 +169,7 @@ public class MicoachBusinessObject {
                 "[page : " + page + "]\t");
         if (responseParser.isNextPagePresent(response) != null && responseParser.isNextPagePresent(response)) {
             LOGGER.info(StringFormatter.makeProgressLogString("getWorkouts", start, page * itemsPerPage, totalResults));
-            response=null;
+            response = null;
             System.gc();
             readWorkouts(start, page + 1, itemsPerPage);
         }
@@ -201,10 +202,24 @@ public class MicoachBusinessObject {
     }
 
     public ResponseModel migration(String status) throws UnsupportedEncodingException {
-        Map<String,String> body =new HashMap<>();
-        body.put("requestId","some id provided by runtastic");
-        body.put("status",status);
-        body.put("state","some info to troubleshot");
-        return micoachClient.migration(currentUser.getAccessToken(),body);
+        Map<String, String> body = new HashMap<>();
+        body.put("requestId", "some id provided by runtastic");
+        body.put("status", status);
+        body.put("state", "some info to troubleshot");
+        return micoachClient.migration(currentUser.getAccessToken(), body);
+    }
+
+    public void postWorkoutsMarathon(Integer workoutCount, String workoutArrayJsonFileName) throws IOException, ParseException {
+        LOGGER.info("START makeAndPostFreeRunWorkouts : " + currentUser.getEmail());
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < workoutCount; i++) {
+            jsonArray.add(workoutProvider.makeFreeRunWorkoutMarathon(makeRandDate(), workoutArrayJsonFileName));
+        }
+        response = micoachClient.postWorkouts(jsonArray.toString(), currentUser.getAccessToken());
+        LOGGER.info("END makeAndPostFreeRunWorkouts : " + currentUser.getEmail());
+    }
+
+    public ResponseModel migrationStatusRead() throws UnsupportedEncodingException {
+        return micoachClient.migrationStatusRead(currentUser.getAccessToken());
     }
 }

@@ -8,10 +8,12 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import provider.UserProvider;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
+import java.util.Properties;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -19,9 +21,9 @@ import static org.testng.Assert.assertTrue;
 @Listeners(InvoceMethodListener.class)
 public class MicoachMigrationTest extends BaseTest {
 
-    private static final int USER_COUNT = 100;
+    private static final int USER_COUNT = 1;
     private static final int USER_THREAD_COUNT = 1;
-
+    private static final Integer ITEMS_PER_PAGE = 250;
     private final Logger LOGGER = Logger.getLogger(this.getClass());
 
     @BeforeClass
@@ -29,7 +31,7 @@ public class MicoachMigrationTest extends BaseTest {
         prepare(this.getClass().getSimpleName());
     }
 
-    @Test(groups = "migration", invocationCount = USER_COUNT, threadPoolSize = USER_THREAD_COUNT)
+       @Test(groups = "migration", invocationCount = USER_COUNT, threadPoolSize = USER_THREAD_COUNT)
     public void micoachMigrationTest() throws IOException, ParseException, InterruptedException {
 
         //PREPARE CLIENT
@@ -44,7 +46,12 @@ public class MicoachMigrationTest extends BaseTest {
         LOGGER.info("LOGIN USER");
         validateLoginResponseForMigration(micoachBusinessObject.login());
 
-        //MIGRATION_STATUS_START
+           //MIGRATION_STATUS_READ
+           LOGGER.info("MIGRATION STATUS READ");
+           ResponseModel migrationStatusResponse = micoachBusinessObject.migrationStatusRead();
+           assertEquals(migrationStatusResponse.getStatusCode(), new Integer(200), "MIGRATION_STATUS READ FAIL : " + migrationStatusResponse.getBody());
+
+           //MIGRATION_STATUS_START
         String migrationStatus="started";
         LOGGER.info("MIGRATION STATUS START : "+migrationStatus);
         ResponseModel migrateResponse = micoachBusinessObject.migration(migrationStatus);
